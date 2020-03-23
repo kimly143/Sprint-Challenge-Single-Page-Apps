@@ -3,9 +3,12 @@ import styled from 'styled-components';
 
 const Search = styled.div`
 	text-align: center;
+	margin-bottom: 2vh;
 `;
 const SearchBox = styled.input`
-	margin-left: 2vw;	
+	margin-left: 2vw;
+	width: 15vw;
+	padding: 5px;
 `;
 
 export default function SearchForm(props) {

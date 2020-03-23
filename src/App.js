@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import styled from 'styled-components';
 import Header from './components/Header.js';
 import CharacterList from './components/CharacterList.js';
 import WelcomePage from './components/WelcomePage.js';

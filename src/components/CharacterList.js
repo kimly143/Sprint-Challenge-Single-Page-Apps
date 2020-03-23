@@ -15,6 +15,7 @@ export default function CharacterList() {
 	const [ characters, setCharacters ] = useState([]);
 	const [ query, setQuery ] = useState('');
 	const queryRX = new RegExp(query, 'i');
+	const [ error, setError ] = useState(null);
 
 	useEffect(() => {
 		axios
@@ -23,11 +24,20 @@ export default function CharacterList() {
 				setCharacters(response.data.results);
 				//console.log(response.data);
 			})
-			.catch((error) => {
-				console.error('Server Error', error);
+			.catch((err) => {
+        console.error('Server Error', err);
+        //STRETCH
+        setError(err.message);
 			});
 	}, []);
 
+  if (error != null){
+    return (
+      <section className="character-list">
+        <div>{error}</div>
+		</section>
+    )
+  }
 	return (
 		<section className="character-list">
 			<SearchForm query={query} setQuery={setQuery} />

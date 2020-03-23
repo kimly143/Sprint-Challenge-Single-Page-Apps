@@ -1,16 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { ricknmorty_URL } from '../url';
+import CharacterCard from './CharacterCard';
 
 export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
+	const [ characters, setCharacters ] = useState([]);
 
-  useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-  }, []);
+	useEffect(() => {
+		axios
+			.get(ricknmorty_URL)
+			.then((response) => {
+				setCharacters(response.data.results);
+				console.log(response.data);
+			})
+			.catch((error) => {
+				console.error('Server Error', error);
+			});
+	}, []);
 
-  return (
-    <section className="character-list">
-      <h2>TODO: `array.map()` over your state here!</h2>
-    </section>
-  );
+	return (
+		<section className="character-list grid-view">
+			{characters.map((character) => <CharacterCard character={character} key={character.id} />)}
+		</section>
+	);
 }

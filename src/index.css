@@ -26,6 +26,10 @@ main {
 
 .grid-view div.card.ui {
   margin: 1.25rem;
+  border: thin solid gray;
+  padding: 0 2vw 2vh 2vw;
+  width: 25vw;
+  text-align: center;
 }
 
 header h1 {

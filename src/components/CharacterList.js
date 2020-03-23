@@ -14,13 +14,14 @@ const Grid = styled.section`
 export default function CharacterList() {
 	const [ characters, setCharacters ] = useState([]);
 	const [ query, setQuery ] = useState('');
+	const queryRX = new RegExp(query, 'i');
 
 	useEffect(() => {
 		axios
 			.get(ricknmorty_URL)
 			.then((response) => {
 				setCharacters(response.data.results);
-				console.log(response.data);
+				//console.log(response.data);
 			})
 			.catch((error) => {
 				console.error('Server Error', error);
@@ -29,8 +30,15 @@ export default function CharacterList() {
 
 	return (
 		<section className="character-list">
-			<SearchForm query={query} setQuery={setQuery}/>
-			<Grid>{characters.map((character) => <CharacterCard character={character} key={character.id} />)}</Grid>
+			<SearchForm query={query} setQuery={setQuery} />
+			<Grid>
+				{characters
+					.filter((character) => {
+						if (query == '') return true;
+						return queryRX.test(character.name);
+					})
+					.map((character) => <CharacterCard character={character} key={character.id} />)}
+			</Grid>
 		</section>
 	);
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { ricknmorty_URL } from '../url';
 import CharacterCard from './CharacterCard';
+import SearchForm from './SearchForm';
 
 const Grid = styled.section`
 	display: flex;
@@ -12,6 +13,7 @@ const Grid = styled.section`
 
 export default function CharacterList() {
 	const [ characters, setCharacters ] = useState([]);
+	const [ query, setQuery ] = useState('');
 
 	useEffect(() => {
 		axios
@@ -26,8 +28,9 @@ export default function CharacterList() {
 	}, []);
 
 	return (
-		<Grid className="character-list">
-			{characters.map((character) => <CharacterCard character={character} key={character.id} />)}
-		</Grid>
+		<section className="character-list">
+			<SearchForm query={query} setQuery={setQuery}/>
+			<Grid>{characters.map((character) => <CharacterCard character={character} key={character.id} />)}</Grid>
+		</section>
 	);
 }

@@ -1,16 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import { ricknmorty_URL } from '../url';
+import CharacterCard from './CharacterCard';
+import SearchForm from './SearchForm';
+
+const Grid = styled.section`
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+`;
 
 export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
+	const [ characters, setCharacters ] = useState([]);
+	const [ query, setQuery ] = useState('');
+	const queryRX = new RegExp(query, 'i');
+	const [ error, setError ] = useState(null);
 
-  useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
-  }, []);
+	useEffect(() => {
+		axios
+			.get(ricknmorty_URL)
+			.then((response) => {
+				setCharacters(response.data.results);
+				//console.log(response.data);
+			})
+			.catch((err) => {
+        console.error('Server Error', err);
+        //STRETCH
+        setError(err.message);
+			});
+	}, []);
 
-  return (
-    <section className="character-list">
-      <h2>TODO: `array.map()` over your state here!</h2>
-    </section>
-  );
+  if (error != null){
+    return (
+      <section className="character-list">
+        <div>{error}</div>
+		</section>
+    )
+  }
+	return (
+		<section className="character-list">
+			<SearchForm query={query} setQuery={setQuery} />
+			<Grid>
+				{characters
+					.filter((character) => {
+						if (query == '') return true;
+						return queryRX.test(character.name);
+					})
+					.map((character) => <CharacterCard character={character} key={character.id} />)}
+			</Grid>
+		</section>
+	);
 }
